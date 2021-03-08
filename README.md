@@ -1,2 +1,2 @@
-# roustabout-reviews
-One stop music reviews!
+# Roustabout Reviews
+One stop for all your music reviews!
