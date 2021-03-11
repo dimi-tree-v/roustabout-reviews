@@ -1,4 +1,4 @@
 import uuid
 
 def get_unique_id():
-    return uuid.uuid(16)
+    return uuid.uuid1().hex
