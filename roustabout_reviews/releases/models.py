@@ -28,10 +28,19 @@ class Member(TimestampedIdModel):
     year_left = models.DateField(null=True)
     role = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.full_name
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 class Genre(TimestampedIdModel):
     name = models.CharField(max_length=35)
     description = models.TextField(max_length=1000, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Release(TimestampedIdModel):
@@ -42,8 +51,14 @@ class Release(TimestampedIdModel):
     date_released = models.DateField()
     language = models.CharField(max_length=50, choices=settings.LANGUAGES)
 
+    def __str__(self):
+        return f'{self.title} by {self.artists.first()}'
+
 
 class Track(TimestampedIdModel):
     title =  models.CharField(max_length=80)
     duration = models.DecimalField(decimal_places=2, max_digits=4)
     release = models.ForeignKey(Release, on_delete=models.CASCADE, related_name='tracks')
+
+    def __str__(self):
+        return f'{self.title} by {self.release.artists.first()}'

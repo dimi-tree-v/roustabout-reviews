@@ -15,16 +15,14 @@ class GenreSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
-    # genre = GenreSerializer(many=True, required=True)
-
     class Meta:
         model = models.Release
         fields = ['url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
 
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
-    members = MemberSerializer(many=True, read_only=True)
-    releases = ReleaseSerializer(many=True, read_only=True)
+    members = serializers.SlugRelatedField(many=True, read_only=True, slug_field='full_name')
+    releases = serializers.SlugRelatedField(many=True, read_only=True, slug_field='display_name')
 
     class Meta:
         model = models.Artist
