@@ -12,12 +12,17 @@ RELEASE_TYPES = [
 
 
 class Artist(TimestampedIdModel):
-    name = models.CharField(max_length=80, null=False)
+    name = models.CharField(max_length=80)
     date_formed = models.DateField(null=False)
-    location_formed = models.CharField(max_length=80, null=False)
+    location_formed = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
 
 
 class Member(TimestampedIdModel):
+    first_name = models.CharField(max_length=80)
+    last_name = models.CharField(max_length=80)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='members')
     year_joined = models.DateField(null=False)
     year_left = models.DateField(null=True)
@@ -26,12 +31,12 @@ class Member(TimestampedIdModel):
 
 class Genre(TimestampedIdModel):
     name = models.CharField(max_length=35)
-    description = models.TextField(max_length=1000)
+    description = models.TextField(max_length=1000, null=True)
 
 
 class Release(TimestampedIdModel):
     title =  models.CharField(max_length=80)
-    artists = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='releases')
+    artists = models.ManyToManyField(Artist, related_name='releases')
     genre =  models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='releases')
     type = models.CharField(max_length=35, choices=RELEASE_TYPES)
     date_released = models.DateField()
