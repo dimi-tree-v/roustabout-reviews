@@ -22,7 +22,7 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.SlugRelatedField(many=True, read_only=True, slug_field='full_name')
-    releases = serializers.SlugRelatedField(many=True, read_only=True, slug_field='display_name')
+    releases = serializers.SlugRelatedField(many=True, read_only=True, slug_field='title')
 
     class Meta:
         model = models.Artist
