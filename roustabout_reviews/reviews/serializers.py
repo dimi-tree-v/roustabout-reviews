@@ -9,6 +9,11 @@ class UserReviewSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ArticleReviewSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.SerializerMethodField()
+
     class Meta:
         model = models.ArticleReview
         fields = ['url', 'title', 'rating', 'author', 'release', 'body']
+
+    def get_author(self, obj):
+        return obj.author.username
