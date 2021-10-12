@@ -10,3 +10,8 @@ class UserReviewViewset(viewsets.ModelViewSet):
 class ArticleReviewViewset(viewsets.ModelViewSet):
     queryset = models.ArticleReview.objects.all()
     serializer_class = serializers.ArticleReviewSerializer
+
+    def get_serializer_class(self):
+        if self.request.method != 'GET':
+            return serializers.ArticleReviewSerializer
+        return serializers.ArticleReviewDetailSerializer
