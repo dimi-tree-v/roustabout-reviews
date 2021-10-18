@@ -16,7 +16,11 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 class ReleaseViewSet(viewsets.ModelViewSet):
     queryset = models.Release.objects.all()
-    serializer_class=  serializers.ReleaseSerializer
+
+    def get_serializer_class(self):
+        if request.method == 'GET':
+            return serializers.ReleaseDetailSerializer
+        return serializers.ReleaseCreateSerializer
 
 
 class ArtistViewSet(viewsets.ModelViewSet):

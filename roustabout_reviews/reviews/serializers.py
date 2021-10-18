@@ -1,5 +1,5 @@
 from reviews import models
-from releases.serializers import ReleaseSerializer
+from releases.serializers import ReleaseDetailSerializer
 from rest_framework import serializers
 
 
@@ -20,7 +20,7 @@ class ArticleReviewCreateSerializer(serializers.HyperlinkedModelSerializer):
 
 class ArticleReviewDetailSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.SerializerMethodField()
-    release = ReleaseSerializer()
+    release = ReleaseDetailSerializer()
 
     class Meta:
         model = models.ArticleReview
@@ -28,6 +28,3 @@ class ArticleReviewDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_author(self, obj):
         return obj.author.username
-
-    # def get_release(self, obj):
-    #     return obj.release.title

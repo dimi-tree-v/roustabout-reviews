@@ -14,11 +14,24 @@ class GenreSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name', 'description']
 
 
-class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
+class ReleaseCreateSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Release
         fields = ['url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
 
+class ReleaseDetailSerializer(serializers.HyperlinkedModelSerializer):
+    artists = serializers.SerializerMethodField()
+    genre = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Release
+        fields = ['url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
+
+    def get_artists(self, obj):
+        return [artist.name for artist in obj.artists.all()]
+
+    def get_genre(self, obj):
+        return obj.genre.name
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.SlugRelatedField(many=True, read_only=True, slug_field='full_name')
@@ -30,7 +43,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TrackSerializer(serializers.HyperlinkedModelSerializer):
-    release = ReleaseSerializer(many=False, required=True)
+    release = ReleaseCreateSerializer(many=False, required=True)
 
     class Meta:
         model = models.Track
