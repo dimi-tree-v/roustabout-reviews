@@ -18,7 +18,7 @@ class ReleaseViewSet(viewsets.ModelViewSet):
     queryset = models.Release.objects.all()
 
     def get_serializer_class(self):
-        if request.method == 'GET':
+        if self.request.method == 'GET':
             return serializers.ReleaseDetailSerializer
         return serializers.ReleaseCreateSerializer
 

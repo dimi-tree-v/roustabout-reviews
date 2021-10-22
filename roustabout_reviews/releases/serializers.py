@@ -25,7 +25,7 @@ class ReleaseDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Release
-        fields = ['url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
+        fields = ['id', 'url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
 
     def get_artists(self, obj):
         return [artist.name for artist in obj.artists.all()]
