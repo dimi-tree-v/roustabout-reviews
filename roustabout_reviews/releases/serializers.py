@@ -19,19 +19,33 @@ class ReleaseCreateSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Release
         fields = ['url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
 
+
 class ReleaseDetailSerializer(serializers.HyperlinkedModelSerializer):
     artists = serializers.SerializerMethodField()
     genre = serializers.SerializerMethodField()
+    articles = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Release
-        fields = ['id', 'url', 'title', 'artists', 'genre', 'type', 'date_released', 'language']
+        fields = ['id', 'url', 'title', 'artists', 'genre', 'type', 'date_released', 'language', 'articles', 'user_reviews']
 
     def get_artists(self, obj):
         return [artist.name for artist in obj.artists.all()]
 
     def get_genre(self, obj):
         return obj.genre.name
+
+    def get_articles(self, obj):
+        return [
+            dict(
+            id=article.id,
+            title=article.title,
+            author=article.author.username,
+            rating=article.rating
+            )
+         for article in obj.articles.all()
+         ]
+
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.SlugRelatedField(many=True, read_only=True, slug_field='full_name')
