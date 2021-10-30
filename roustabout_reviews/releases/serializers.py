@@ -1,4 +1,6 @@
 from releases import models
+from reviews.serializers import ArticleReviewSerializer, UserReviewSerializer
+
 from rest_framework import serializers
 
 
@@ -21,30 +23,14 @@ class ReleaseCreateSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReleaseDetailSerializer(serializers.HyperlinkedModelSerializer):
-    artists = serializers.SerializerMethodField()
-    genre = serializers.SerializerMethodField()
-    articles = serializers.SerializerMethodField()
+    artists = serializers.SlugRelatedField(read_only=True, many=True, slug_field='name')
+    genre = serializers.StringRelatedField(read_only=True, many=False)
+    articles = ArticleReviewSerializer(read_only=True, many=True)
+    user_reviews = UserReviewSerializer(read_only=True, many=True)
 
     class Meta:
         model = models.Release
         fields = ['id', 'url', 'title', 'artists', 'genre', 'type', 'date_released', 'language', 'articles', 'user_reviews']
-
-    def get_artists(self, obj):
-        return [artist.name for artist in obj.artists.all()]
-
-    def get_genre(self, obj):
-        return obj.genre.name
-
-    def get_articles(self, obj):
-        return [
-            dict(
-            id=article.id,
-            title=article.title,
-            author=article.author.username,
-            rating=article.rating
-            )
-         for article in obj.articles.all()
-         ]
 
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):

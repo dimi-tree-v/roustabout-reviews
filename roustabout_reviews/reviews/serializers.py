@@ -1,30 +1,21 @@
 from reviews import models
-from releases.serializers import ReleaseDetailSerializer
 from rest_framework import serializers
 
 
 class UserReviewSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.SlugRelatedField(read_only=True, many=False, slug_field='username')
+
     class Meta:
         model = models.UserReview
         fields = ['id', 'url', 'title', 'rating', 'author', 'release', 'body']
         read_only_fields = ['id']
 
 
-class ArticleReviewCreateSerializer(serializers.HyperlinkedModelSerializer):
+class ArticleReviewSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.SlugRelatedField(read_only=True, many=False, slug_field='username')
+    release = serializers.SlugRelatedField(read_only=True, many=False, slug_field='title')
 
     class Meta:
         model = models.ArticleReview
-        fields = ['id', 'url', 'title', 'rating', 'author', 'release', 'body']
-        read_only_fields = ['id']
-
-
-class ArticleReviewDetailSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.SerializerMethodField()
-    release = ReleaseDetailSerializer()
-
-    class Meta:
-        model = models.ArticleReview
-        fields = ['id', 'url', 'title', 'rating', 'author', 'release', 'body']
-
-    def get_author(self, obj):
-        return obj.author.username
+        fields = ['id', 'url', 'title', 'rating', 'author', 'artists', 'release', 'genre', 'body']
+        read_only_fields = ['id', 'url', 'author', 'release', 'genre']
