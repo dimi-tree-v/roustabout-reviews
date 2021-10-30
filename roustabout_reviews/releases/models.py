@@ -52,7 +52,7 @@ class Release(TimestampedIdModel):
     language = models.CharField(max_length=50, choices=settings.LANGUAGES)
 
     def __str__(self):
-        return f'{self.title} by {self.artists.first()}'
+        return f'{self.title}'
 
 
 class Track(TimestampedIdModel):
