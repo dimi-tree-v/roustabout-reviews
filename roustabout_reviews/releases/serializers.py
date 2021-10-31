@@ -32,12 +32,26 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
         ]
         read_only_fields = [
             'id', 'average_critic_rating', 'average_user_rating', 'articles', 'user_reviews',
-        ] 
+        ]
+
+
+class ArtistReleaseSerializer(serializers.HyperlinkedModelSerializer):
+    genre = serializers.SlugRelatedField(read_only=True, many=False, slug_field='name')
+    average_critic_rating = serializers.CharField(read_only=True)
+    average_user_rating = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = models.Release
+        fields = [
+            'id', 'title', 'genre', 'type', 'average_critic_rating', 'average_user_rating',
+            'date_released',
+        ]
+        read_only_fields = fields
 
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     members = serializers.SlugRelatedField(many=True, read_only=True, slug_field='full_name')
-    releases = serializers.SlugRelatedField(many=True, read_only=True, slug_field='title')
+    releases = ArtistReleaseSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Artist
