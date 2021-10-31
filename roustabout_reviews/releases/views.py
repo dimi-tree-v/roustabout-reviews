@@ -11,16 +11,18 @@ class MemberViewSet(viewsets.ModelViewSet):
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = models.Genre.objects.all()
-    serializer_class=  serializers.GenreSerializer
+    serializer_class =  serializers.GenreSerializer
 
 
 class ReleaseViewSet(viewsets.ModelViewSet):
     queryset = models.Release.objects.all()
+    serializer_class = serializers.ReleaseSerializer
 
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return serializers.ReleaseDetailSerializer
-        return serializers.ReleaseCreateSerializer
+    def get_queryset(self):
+        query_params = self.request.query_params.dict()
+        if 'artists' in query_params.keys():
+            query_params['artists__name'] = query_params.pop("artists")
+        return self.queryset.filter(**query_params)
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
