@@ -6,7 +6,7 @@ from rest_framework import viewsets
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = models.Member.objects.all()
-    serializer_class=  serializers.MemberSerializer
+    serializer_class = serializers.MemberSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
@@ -27,9 +27,13 @@ class ReleaseViewSet(viewsets.ModelViewSet):
 
 class ArtistViewSet(viewsets.ModelViewSet):
     queryset = models.Artist.objects.all()
-    serializer_class=  serializers.ArtistSerializer
+    serializer_class = serializers.ArtistSerializer
 
+    def get_queryset(self):
+        query_params = self.request.query_params.dict()
+        return self.queryset.filter(**query_params)
+        
 
 class TrackViewSet(viewsets.ModelViewSet):
     queryset = models.Track.objects.all()
-    serializer_class=  serializers.TrackSerializer
+    serializer_class = serializers.TrackSerializer
