@@ -1,9 +1,11 @@
 from reviews import models
+
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 
 class UserReviewSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.SlugRelatedField(read_only=True, many=False, slug_field='username')
+    author = serializers.SlugRelatedField(queryset=User.objects.all(), many=False, slug_field='username')
 
     class Meta:
         model = models.UserReview
