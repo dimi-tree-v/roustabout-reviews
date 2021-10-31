@@ -1,7 +1,9 @@
 from releases import serializers
 from releases import models
 
+from django.core.exceptions import FieldError
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -18,11 +20,15 @@ class ReleaseViewSet(viewsets.ModelViewSet):
     queryset = models.Release.objects.all()
     serializer_class = serializers.ReleaseSerializer
 
+
     def get_queryset(self):
         query_params = self.request.query_params.dict()
         if 'artists' in query_params.keys():
-            query_params['artists__name'] = query_params.pop("artists")
-        return self.queryset.filter(**query_params)
+            query_params['artists__name'] = query_params.pop('artists')
+        try:
+            return self.queryset.filter(**query_params)
+        except FieldError:
+            raise ValidationError("Invalid query parameter", 400)
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -32,7 +38,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         query_params = self.request.query_params.dict()
         return self.queryset.filter(**query_params)
-        
+
 
 class TrackViewSet(viewsets.ModelViewSet):
     queryset = models.Track.objects.all()
