@@ -1,5 +1,5 @@
 import datetime
-from releases.models import Artist, Member, Genre, Release
+from releases.models import Artist, Member, Genre, Release, Track
 
 
 class ArtistFactory:
@@ -77,7 +77,7 @@ class ReleaseFactory:
     @classmethod
     def _assign_artist(self, artists, release):
         for artist in artists:
-            artist.release=release
+            artist.release = release
             artist.save()
 
 class TrackFactory:
@@ -85,11 +85,11 @@ class TrackFactory:
     def create(
         cls,
         title='the_test_blues',
-        duration='Genre originating from...',
+        duration="2.05",
         release='test_song'
     ):
         release = ReleaseFactory.create(title=title)
-        return Genre.objects.get_or_create(
+        return Track.objects.get_or_create(
             title=title,
             duration=duration,
             release=release

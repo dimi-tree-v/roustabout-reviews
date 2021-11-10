@@ -14,7 +14,7 @@ class ArticleReviewFactory:
         body="test body",
     ):
         user = User.objects.get_or_create(username='testuser', password='12345')[0]
-        release = ReleaseFactory.create()
+        release = ReleaseFactory.create(title=release)
         return ArticleReview.objects.get_or_create(
             title=title,
             rating=rating,

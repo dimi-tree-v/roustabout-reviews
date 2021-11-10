@@ -80,4 +80,4 @@ class Track(TimestampedIdModel):
     release = models.ForeignKey(Release, on_delete=models.CASCADE, related_name='tracks')
 
     def __str__(self):
-        return f'{self.title} by {self.release.artists.first()}'
+        return f'{self.title}'
