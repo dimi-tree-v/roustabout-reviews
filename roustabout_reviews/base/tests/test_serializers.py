@@ -16,3 +16,4 @@ class TestUserSerializer(TestCase):
     def test_successful_create(self):
         test_user = UserSerializer().create(self.test_user_data)
         self.assertIsInstance(test_user, User)
+        self.assertEqual(test_user.username, 'J.L. Picard')
