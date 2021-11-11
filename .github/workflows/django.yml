@@ -28,4 +28,5 @@ jobs:
     - name: Run Tests
       run: |
         pwd
+        ls -ltra
         python manage.py test
