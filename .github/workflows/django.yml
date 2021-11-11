@@ -28,5 +28,4 @@ jobs:
     - name: Run Tests
       run: |
         cd roustabout_reviews
-        ls -ltra
         . ./run_tests.sh
