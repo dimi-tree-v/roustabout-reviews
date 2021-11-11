@@ -21,3 +21,6 @@ run:
 # Run server:
 To run server:
 >> . ./start_api.sh
+
+# Run tests (coverage included):
+>>. ./roustabout_reviews/run_tests.sh
