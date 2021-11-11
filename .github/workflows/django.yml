@@ -27,6 +27,5 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        pwd
-        ls -ltra
-        python manage.py test
+        cd roustabout_reviews
+        . ./run_tests.sh
