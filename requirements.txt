@@ -3,3 +3,4 @@ djangorestframework==3.12.2
 django-cors-headers==3.7.0
 djangorestframework-simplejwt==4.6.0
 requests==2.25.1
+coverage==6.1.1
