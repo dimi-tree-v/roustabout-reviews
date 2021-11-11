@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ./venv/bin/activate
+#. ./venv/bin/activate
+. ./venv/Scripts/activate
 
 cd roustabout_reviews
 DJANGO_SETTINGS_MODULE="base.settings"

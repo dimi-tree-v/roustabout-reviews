@@ -1,7 +1,9 @@
 from base.models import TimestampedIdModel
+from base.utils import get_average
 
 from django.db import models
 from django.conf import settings
+from django.utils.functional import cached_property
 
 RELEASE_TYPES = [
     ('ALBUM', 'ALBUM'),
@@ -52,7 +54,24 @@ class Release(TimestampedIdModel):
     language = models.CharField(max_length=50, choices=settings.LANGUAGES)
 
     def __str__(self):
-        return f'{self.title} by {self.artists.first()}'
+        return f'{self.title}'
+
+    @cached_property
+    def average_critic_rating(self):
+        return get_average([
+            article.rating
+            for article
+            in self.articles.all()
+        ])
+
+
+    @cached_property
+    def average_user_rating(self):
+        return get_average([
+            user_review.rating
+            for user_review
+            in self.user_reviews.all()
+        ])
 
 
 class Track(TimestampedIdModel):
@@ -61,4 +80,4 @@ class Track(TimestampedIdModel):
     release = models.ForeignKey(Release, on_delete=models.CASCADE, related_name='tracks')
 
     def __str__(self):
-        return f'{self.title} by {self.release.artists.first()}'
+        return f'{self.title}'
